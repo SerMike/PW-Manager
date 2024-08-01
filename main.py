@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import messagebox
 import random
+import pyperclip
 
 # -------------------------------- PASSWORD GENERATOR ----------------------------------- #
 def generate_password():
@@ -25,7 +26,7 @@ def generate_password():
     # Join all character groups into one output and display it in 'Password' input field for user.
     strong_password = "".join(password_list)
     password_input.insert(0, strong_password)
-
+    pyperclip.copy(strong_password)     # Will save strong password to clipboard for easy pasting
 
 # -------------------------------- SAVE PASSWORD ----------------------------------- #
 def save():
@@ -51,6 +52,8 @@ def save():
                 website_input.delete(0, END)
                 password_input.delete(0, END)
                 website_input.focus()
+                messagebox.showinfo(title="Success!", message="Contents were successfully saved!\n"
+                                                              "Your strong password is copied to your clipboard.")
 
 
 # ------------------------------------- UI SETUP ---------------------------------------------- #
