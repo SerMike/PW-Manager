@@ -2,8 +2,9 @@ from tkinter import *
 from tkinter import messagebox
 import random
 
-# ---------------------------- PASSWORD GENERATOR ------------------------------- #
+# -------------------------------- PASSWORD GENERATOR ----------------------------------- #
 def generate_password():
+    """Generates a strong password by randomly generating alphanumeric and special characters into a single output"""
     letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
                'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R',
                'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
@@ -21,11 +22,12 @@ def generate_password():
     password_list = pw_letters + pw_numbers + pw_symbols
     random.shuffle(password_list)
 
+    # Join all character groups into one output and display it in 'Password' input field for user.
     strong_password = "".join(password_list)
     password_input.insert(0, strong_password)
 
 
-# ---------------------------- SAVE PASSWORD ------------------------------- #
+# -------------------------------- SAVE PASSWORD ----------------------------------- #
 def save():
     """Saves inputs from 'Website', 'Email/Username', and 'Password' fields
     into a data.txt file in a pipe delimited format. Clears contents from
@@ -34,6 +36,7 @@ def save():
     em_un = email_un_input.get()
     pw = password_input.get()
 
+    # Checks to see if 'Website' or 'Password' input fields are empty
     if len(web) == 0 or pw == 0:
         messagebox.showwarning(title="Warning!", message="Please don't leave any fields blank!")
     else:
@@ -41,6 +44,7 @@ def save():
                                                           f"Email: {em_un} \n"
                                                           f"Password: {pw} \n"
                                                           f"Is it ok to save?")
+        # If fields are populated prompt the user to 'Save' contents or cancel.
         if is_ok:
             with open("data.txt", "a") as file:
                 file.write(f"{web} | {em_un} | {pw}\n")
@@ -49,7 +53,7 @@ def save():
                 website_input.focus()
 
 
-# ---------------------------- UI SETUP ------------------------------- #
+# ------------------------------------- UI SETUP ---------------------------------------------- #
 # Window Setup
 window = Tk()
 window.title("Password Manager")
@@ -89,5 +93,6 @@ pw_button.grid(row=3, column=2, sticky="nsew")
 # Add button
 add_button = Button(text="Add", width=30, command=save)
 add_button.grid(row=4, column=1, columnspan=2, sticky="nsew")
+
 
 window.mainloop()
