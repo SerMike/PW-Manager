@@ -76,6 +76,25 @@ def save():
                                                           "Your strong password is copied to your clipboard.")
 
 
+# ---------------------------------------------- Find Password ------------------------------------------------------- #
+def find_password():
+    """Allows user to search saved contents for existing credentials to retrieve and will be displayed in dialog box"""
+    web_site = website_input.get()
+    try:
+        with open("data.json", "r") as data_file:
+            data = json.load(data_file)
+    except FileNotFoundError:
+        messagebox.showinfo(title="Error", message="No data file found.")
+    else:
+        # Check to see if user data is in the existing data.json file
+        if web_site in data:
+            email = data[web_site]["email"]
+            pw = data[web_site]["password"]
+            messagebox.showinfo(title=f"{web_site} Credentials", message=f"Email: {email}\nPassword: {pw}")
+        else:
+            messagebox.showinfo(title="Error", message=f"No details for {web_site} exists.")
+
+
 # -------------------------------------------------- UI SETUP -------------------------------------------------------- #
 # Window Setup
 window = Tk()
@@ -91,9 +110,12 @@ canvas.grid(row=0, column=1)
 website = Label(text="Website:")
 website.grid(row=1, column=0)
 
-website_input = Entry(width=40)
-website_input.grid(row=1, column=1, columnspan=2)
+website_input = Entry(width=23)
+website_input.grid(row=1, column=1)
 website_input.focus()
+
+search_button = Button(text="Search", command=find_password)
+search_button.grid(row=1, column=2, sticky="ew")
 
 # Email/Username Label & Entry
 email_un = Label(text="Email/Username:")
