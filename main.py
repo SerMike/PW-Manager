@@ -4,6 +4,7 @@ import random
 import pyperclip
 import json
 
+
 # -------------------------------------------- PASSWORD GENERATOR ---------------------------------------------------- #
 def generate_password():
     """Generates a strong password by randomly generating alphanumeric and special characters into a single output"""
@@ -52,22 +53,27 @@ def save():
     if len(web) == 0 or len(pw) == 0:
         messagebox.showinfo(title="Warning!", message="Please don't leave any fields blank!")
     else:
-        with open("data.json", "r") as data_file:
-            # Read existing data
-            data = json.load(data_file)
+        try:
+            with open("data.json", "r") as data_file:
+                # Read existing data
+                data = json.load(data_file)
+        except FileNotFoundError:
+            with open("data.json", "w") as data_file:
+                json.dump(new_data, data_file, indent=4)
+        else:
             # Update existing data with new data
             data.update(new_data)
 
-        with open("data.json", "w") as data_file:
-            # Save updated data
-            json.dump(data, data_file, indent=4)
-
+            with open("data.json", "w") as data_file:
+                # Save updated data
+                json.dump(data, data_file, indent=4)
+        finally:
             # Clear existing user inputs from website and password fields
             website_input.delete(0, END)
             password_input.delete(0, END)
             website_input.focus()
-            # messagebox.showinfo(title="Success!", message="Contents were successfully saved!\n"
-            #                                              "Your strong password is copied to your clipboard.")
+            messagebox.showinfo(title="Success!", message="Contents were successfully saved!\n"
+                                                          "Your strong password is copied to your clipboard.")
 
 
 # -------------------------------------------------- UI SETUP -------------------------------------------------------- #
